@@ -1,0 +1,81 @@
+\RequirePackage{amsfonts}
+\RequirePackage{mathtools}
+\RequirePackage{suffix}
+
+% helper functions for paired delimiters
+\makeatletter
+\def\@xxx{xxx}
+
+% ()
+\DeclarePairedDelimiterX\utils@paren[1](){#1}
+\newcommand{\utilsparen}[2]{\renewcommand{\given}[1][\delimsize]{\GivenSymbol[##1]}\def\@yyy{#1}\ifx\@xxx\@yyy\utils@paren*{#2}\else\utils@paren[#1]{#2}\fi}
+
+% []
+\DeclarePairedDelimiterX\utils@brac[1][]{#1}
+\newcommand{\utilsbrac}[2]{\renewcommand{\given}[1][\delimsize]{\GivenSymbol[##1]}\def\@yyy{#1}\ifx\@xxx\@yyy\utils@brac*{#2}\else\utils@brac[#1]{#2}\fi}
+
+% <>
+\DeclarePairedDelimiterX\utils@angle[1]\langle\rangle{#1}
+\newcommand{\utilsangle}[2]{\renewcommand{\given}[1][\delimsize]{\GivenSymbol[##1]}\def\@yyy{#1}\ifx\@xxx\@yyy\utils@angle*{#2}\else\utils@angle[#1]{#2}\fi}
+
+% | |
+\DeclarePairedDelimiterX\utils@abs[1]\lvert\rvert{#1}
+\newcommand{\utilsabs}[2]{\def\@yyy{#1}\ifx\@xxx\@yyy\utils@abs*{#2}\else\utils@abs[#1]{#2}\fi}
+
+% || ||
+\DeclarePairedDelimiterX\utils@norm[1]\lVert\rVert{#1}
+\newcommand{\utilsnorm}[2]{\def\@yyy{#1}\ifx\@xxx\@yyy\utils@norm*{#2}\else\utils@norm[#1]{#2}\fi}
+
+\makeatother
+
+% given (used for conditional probability, expectation, ...)
+\newcommand\GivenSymbol[1][]{%
+      \nonscript\:#1\vert
+      \allowbreak
+      \nonscript\:
+      \mathopen{}}
+\newcommand\given[1][]{\GivenSymbol[#1]}
+
+% probability
+\newcommand\IP[2][xxx]{\mathbb{P}\utilsparen{#1}{#2}}
+\WithSuffix\newcommand\IP*[3][xxx]{\mathbb{P}_{#2}\utilsparen{#1}{#3}}
+
+% expected value
+\newcommand\IE[2][xxx]{\mathbb{E}\utilsbrac{#1}{#2}}
+\WithSuffix\newcommand\IE*[3][xxx]{\mathbb{E}_{#2}\utilsbrac{#1}{#3}}
+
+% variance
+\newcommand\Var[2][xxx]{\mathrm{Var}\utilsparen{#1}{#2}}
+\WithSuffix\newcommand\Var*[3][xxx]{\mathrm{Var}_{#2}\utilsparen{#1}{#3}}
+
+% covariance
+\newcommand\Cov[2][xxx]{\mathrm{Cov}\utilsparen{#1}{#2}}
+\WithSuffix\newcommand\Cov*[3][xxx]{\mathrm{Cov}_{#2}\utilsparen{#1}{#3}}
+
+% inner product
+\newcommand\inner[2][xxx]{\utilsangle{#1}{#2}}
+
+% double-angled inner product
+\newcommand\dinner[2][xxx]{\inner[#1]{\!\inner[#1]{#2}\!}}
+
+% absolute value
+\newcommand\abs[2][xxx]{\utilsabs{#1}{#2}}
+
+% norms
+\newcommand\norm[2][xxx]{\utilsnorm{#1}{#2}}
+\newcommand\normF[2][xxx]{\norm[#1]{#2}_F}
+\newcommand\normNuc[2][xxx]{\norm[#1]{#2}_*}
+\newcommand\normOp[2][xxx]{\norm[#1]{#2}_{\operatorname{op}}}
+
+% trace
+\newcommand\tr[2][xxx]{\operatorname{tr}\utilsparen{#1}{#2}}
+
+% N, Z, Q, R sets
+\newcommand\IN{\mathbb{N}}
+\newcommand\IZ{\mathbb{Z}}
+\newcommand\IQ{\mathbb{Q}}
+\newcommand\IR{\mathbb{R}}
+
+% argmin and argmax
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
